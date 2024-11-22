@@ -8,6 +8,9 @@ import com.example.jewelryWeb.models.DTO.DiamondFilterDTO;
 import com.example.jewelryWeb.models.Entity.*;
 import com.example.jewelryWeb.service.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/diamonds")
@@ -34,4 +37,9 @@ public class DiamondViewController {
         List<Diamond> diamonds = diamondService.filterDiamonds(filterDTO);
         return ResponseEntity.ok(diamonds);
     }
+    @GetMapping("path")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
 }
