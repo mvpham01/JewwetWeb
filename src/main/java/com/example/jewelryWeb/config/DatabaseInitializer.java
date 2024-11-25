@@ -19,16 +19,14 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         @Override
         public void run(String... args) throws Exception {
-                // Kiểm tra xem Category "Nhẫn" đã tồn tại chưa
                 Optional<Category> rootCategory = categoryRepository.findByCategoryName("Nhẫn");
                 if (rootCategory.isEmpty()) {
-                        // Tạo category "Nhẫn" và các category con
                         Category root = Category.builder()
                                         .categoryName("Nhẫn")
                                         .gender(null)
                                         .parentCategory(null)
                                         .build();
-                        root = categoryRepository.save(root); // Lưu "Nhẫn"
+                        root = categoryRepository.save(root);
                         Category maleRing = Category.builder()
                                         .categoryName("Nhẫn Nam")
                                         .gender(Gender.MALE)
@@ -52,14 +50,28 @@ public class DatabaseInitializer implements CommandLineRunner {
                                         .gender(null)
                                         .parentCategory(root)
                                         .build();
-                        Category jewelrySet = Category.builder()
+                        Category earrings = Category.builder()
+                                        .categoryName("Bông Tai")
+                                        .gender(null)
+                                        .parentCategory(root)
+                                        .build();
+                        Category necklace = Category.builder()
+                                        .categoryName("Vòng Cổ")
+                                        .gender(null)
+                                        .parentCategory(root)
+                                        .build();
+                        Category bracelet = Category.builder()
+                                        .categoryName("Vòng Tay")
+                                        .gender(null)
+                                        .parentCategory(root)
+                                        .build();
+                        Category jewelryset = Category.builder()
                                         .categoryName("Bộ Trang Sức")
                                         .gender(null)
                                         .parentCategory(root)
                                         .build();
-
                         // Lưu các category con
-                        categoryRepository.saveAll(List.of(maleRing, femaleRing, proposalRing, weddingRing,jewelrySet));
+                        categoryRepository.saveAll(List.of(maleRing, femaleRing, proposalRing, weddingRing,  earrings, necklace, bracelet,jewelryset));
 
                         System.out.println("Database initialized successfully with categories!");
                 } else {

@@ -36,12 +36,16 @@ public class StorageService {
         byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
         return images;
     }
-
+    public byte[] downloadImageById(Long id) {
+        Optional<ImageData> dbImageData = repository.findById(id);
+        byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
+        return images;
+    }
+    
     public List<String> uploadImages(List<MultipartFile> files) throws IOException {
         List<String> uploadedFileMessages = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            // Xử lý từng ảnh
             ImageData imageData = repository.save(ImageData.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())

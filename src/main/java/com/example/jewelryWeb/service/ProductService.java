@@ -199,5 +199,7 @@ public class ProductService {
 
         return productRepository.findAll(spec);
     }
-
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        return productRepository.findByCategory_CategoryId(categoryId);
+    }
 }

@@ -16,41 +16,51 @@ public class ProductViewController {
     @Autowired
     private ProductService productService;
     //nhẫn kim cương nam
+    @GetMapping("ring")
+    public ResponseEntity<List<Product>> getAllRing() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)1));
+    }
+    //nhẫn kim cương nam
     @GetMapping("ring/male")
-    public ResponseEntity<List<Product>> getAllMaleRing(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<Product>> getAllMaleRing() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)2));
     }
     //nhẫn kim cương nữ
     @GetMapping("ring/female")
-    public ResponseEntity<List<Product>> getAllFeMaleRing(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<Product>> getAllFeMaleRing() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)3));
     }
     //nhẫn cầu hôn
     @GetMapping("ring/proposal")
-    public ResponseEntity<List<Product>> getAllProposalRing(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<Product>> getAllProposalRing() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)4));
     }
     //nhẫn cưới 
     @GetMapping("ring/wedding")
-    public ResponseEntity<List<Product>> getAllWeddingRing(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<Product>> getAllWeddingRing() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)5));
     }
     //vòng tay
-    @GetMapping("ring/bracelet")
-    public ResponseEntity<List<Product>> getAllBracelet(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    @GetMapping("bracelet")
+    public ResponseEntity<List<Product>> getAllBracelet() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)6));
     }
     //vòng cổ
-    @GetMapping("ring/necklace")
-    public ResponseEntity<List<Product>> getAllNecklace(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    @GetMapping("necklace")
+    public ResponseEntity<List<Product>> getAllNecklace() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)7));
     }
     //bông tai
-    @GetMapping("ring/earrings")
-    public ResponseEntity<List<Product>> getAllEarrings(@RequestParam String param) {
-        return ResponseEntity.ok(null);
+    @GetMapping("earrings")
+    public ResponseEntity<List<Product>> getAllEarrings() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)8));
     }
     //bộ trang sức
+    @GetMapping("jewelryset")
+    public ResponseEntity<List<Product>> getAlljewelrySet() {
+        return ResponseEntity.ok(productService.getProductsByCategoryId((long)9));
+    }
+
     @GetMapping("/filter")
     public ResponseEntity<List<Product>> filterProducts(
             @RequestParam(required = false) String material,

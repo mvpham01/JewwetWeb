@@ -23,8 +23,7 @@ public class ImageComtroller {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(uploadImage);
 	}
-
-	@GetMapping("/{fileName}")
+	//http://localhost:8080/image/{filename}
 	public ResponseEntity<?> downloadImage(@PathVariable String fileName){
 		byte[] imageData=service.downloadImage(fileName);
 		return ResponseEntity.status(HttpStatus.OK)
@@ -32,7 +31,14 @@ public class ImageComtroller {
 				.body(imageData);
 
 	}
-	
+	//http://localhost:8080/image/id/{id}
+	@GetMapping("id/{id}")
+	public ResponseEntity<?> downloadImageById(@PathVariable Long id) {
+		byte[] imageData = service.downloadImageById(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaType.valueOf("image/png"))
+				.body(imageData);
+	}
 	@PostMapping("/muti-images")
 	public ResponseEntity<?> uploadImages(@RequestParam("images") List<MultipartFile> files) throws IOException {
 		List<String> uploadedImages = service.uploadImages(files);
