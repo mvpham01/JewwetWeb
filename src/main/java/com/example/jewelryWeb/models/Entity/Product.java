@@ -27,7 +27,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonIgnore // Ngăn vòng lặp đệ quy
+    @JsonIgnore 
     private Category category;
 
     @Column(nullable = false)

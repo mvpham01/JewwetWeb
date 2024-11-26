@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.example.jewelryWeb.models.Entity.News;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
+    boolean existsByTitle(String title);
 }

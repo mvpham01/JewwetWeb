@@ -34,38 +34,22 @@ public class ProductService {
     @Autowired
     private StorageRepository imageDataRepository;
 
-    // Lấy tất cả sản phẩm
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // Lấy sản phẩm theo ID
     public Optional<Product> getProductById(Long productId) {
         return productRepository.findById(productId);
     }
 
-    // Thêm sản phẩm mới
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
 
-    // Cập nhật sản phẩm
-    public Product updateProduct(Long productId, Product updatedProduct) {
-        return productRepository.findById(productId).map(product -> {
-            product.setProductName(updatedProduct.getProductName());
-            product.setCategory(updatedProduct.getCategory());
-            product.setPrice(updatedProduct.getPrice());
-            product.setMetallicColor(updatedProduct.getMetallicColor());
-            product.setMaterial(updatedProduct.getMaterial());
-            product.setDiscount(updatedProduct.getDiscount());
-            product.setImages(updatedProduct.getImages());
-            product.setIsFeatured(updatedProduct.getIsFeatured());
-            product.setIsActive(updatedProduct.getIsActive());
-            return productRepository.save(product);
-        }).orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + productId));
-    }
-
     public Product createProduct(ProductDTO productDTO) throws IOException {
+        if (isProductNameDuplicate(productDTO.getProductName())) {
+            throw new IllegalArgumentException("Product name already exists: " + productDTO.getProductName());
+        }
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Category not found with ID: " + productDTO.getCategoryId()));
@@ -115,11 +99,12 @@ public class ProductService {
     }
 
     public Product editProduct(Long productId, ProductDTO productDTO) throws IOException {
-        // Tìm sản phẩm theo ID
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
-
-        // Lấy danh sách ảnh hiện tại từ sản phẩm
+        if (!product.getProductName().equals(productDTO.getProductName()) &&
+                isProductNameDuplicate(productDTO.getProductName())) {
+            throw new IllegalArgumentException("Product name already exists: " + productDTO.getProductName());
+        }
         Set<ImageData> currentImages = new HashSet<>();
         if (product.getImages() != null && !product.getImages().isEmpty()) {
             List<Long> currentImageIds = Arrays.stream(product.getImages().split(","))
@@ -127,25 +112,19 @@ public class ProductService {
                     .toList();
             currentImages.addAll(imageDataRepository.findAllById(currentImageIds));
         }
-
-        // Danh sách ảnh mới từ DTO
         Set<ImageData> newImages = new HashSet<>();
         Set<String> newImageNames = new HashSet<>();
         if (productDTO.getImages() != null) {
             for (MultipartFile file : productDTO.getImages()) {
                 String newName = file.getOriginalFilename();
                 newImageNames.add(newName);
-
-                // Kiểm tra nếu tên ảnh đã tồn tại
                 Optional<ImageData> existingImage = currentImages.stream()
                         .filter(img -> img.getName().equals(newName))
                         .findFirst();
 
                 if (existingImage.isPresent()) {
-                    // Ảnh đã tồn tại, giữ lại
                     newImages.add(existingImage.get());
                 } else {
-                    // Ảnh mới, thêm vào cơ sở dữ liệu
                     ImageData newImage = imageDataRepository.save(
                             ImageData.builder()
                                     .name(newName)
@@ -156,8 +135,6 @@ public class ProductService {
                 }
             }
         }
-
-        // Xóa ảnh không còn trong danh sách mới
         for (ImageData currentImage : currentImages) {
             if (!newImageNames.contains(currentImage.getName())) {
                 boolean isReferenced = productRepository.existsByImageId(currentImage.getId().toString());
@@ -167,7 +144,6 @@ public class ProductService {
             }
         }
 
-        // Cập nhật các thuộc tính của sản phẩm
         product.setProductName(productDTO.getProductName());
         product.setCategory(
                 categoryRepository.findById(productDTO.getCategoryId())
@@ -185,8 +161,6 @@ public class ProductService {
 
         product.setIsFeatured(productDTO.getIsFeatured());
         product.setIsActive(productDTO.getIsActive());
-
-        // Lưu sản phẩm sau khi chỉnh sửa
         return productRepository.save(product);
     }
 
@@ -199,7 +173,18 @@ public class ProductService {
 
         return productRepository.findAll(spec);
     }
+
     public List<Product> getProductsByCategoryId(Long categoryId) {
         return productRepository.findByCategory_CategoryId(categoryId);
     }
+
+    public List<Product> filterProducts(Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, String material,
+            String metallicColor, String gender) {
+        return productRepository.filterProducts(categoryId, minPrice, maxPrice, material, metallicColor, gender);
+    }
+
+    public boolean isProductNameDuplicate(String productName) {
+        return productRepository.existsByProductName(productName);
+    }
+
 }

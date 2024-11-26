@@ -23,9 +23,12 @@ public class News {
     private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String contentHeader;
 
-    private String image;
+    private long image;
+    @Column(columnDefinition = "TEXT")
+
+    private String contentFooter;
 
     private LocalDateTime publishedAt;
 

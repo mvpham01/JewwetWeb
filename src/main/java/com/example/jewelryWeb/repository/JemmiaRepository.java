@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.example.jewelryWeb.models.Entity.Jemmia;
 @Repository
 public interface JemmiaRepository extends JpaRepository<Jemmia, Long> {
+    boolean existsByTitle(String title);
 }

@@ -15,22 +15,17 @@ public class DiamondService {
 @Autowired
     private DiamondRepository diamondRepository;
 
-    // Lấy tất cả diamond
     public List<Diamond> getAllDiamonds() {
         return diamondRepository.findAll();
     }
 
-    // Lấy diamond theo ID
     public Optional<Diamond> getDiamondById(Long diamondId) {
         return diamondRepository.findById(diamondId);
     }
-
-    // Thêm diamond mới
     public Diamond addDiamond(Diamond diamond) {
         return diamondRepository.save(diamond);
     }
 
-    // Cập nhật diamond
     public Diamond updateDiamond(Long diamondId, Diamond updatedDiamond) {
         return diamondRepository.findById(diamondId).map(diamond -> {
             diamond.setWeight(updatedDiamond.getWeight());
@@ -43,7 +38,6 @@ public class DiamondService {
         }).orElseThrow(() -> new IllegalArgumentException("Diamond not found with id: " + diamondId));
     }
 
-    // Xóa diamond
     public void deleteDiamond(Long diamondId) {
         diamondRepository.deleteById(diamondId);
     }

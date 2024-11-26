@@ -20,7 +20,6 @@ public class DiamondController {
         return ResponseEntity.ok(diamonds);
     }
 
-    // Lấy diamond theo ID
     @GetMapping("/{id}")
     public ResponseEntity<Diamond> getDiamondById(@PathVariable Long id) {
         return diamondService.getDiamondById(id)
@@ -28,14 +27,13 @@ public class DiamondController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Thêm diamond mới
     @PostMapping
     public ResponseEntity<Diamond> addDiamond(@RequestBody Diamond diamond) {
         Diamond newDiamond = diamondService.addDiamond(diamond);
         return ResponseEntity.ok(newDiamond);
     }
 
-    // Cập nhật diamond
+
     @PutMapping("/{id}")
     public ResponseEntity<Diamond> updateDiamond(@PathVariable Long id, @RequestBody Diamond diamond) {
         try {
@@ -46,7 +44,6 @@ public class DiamondController {
         }
     }
 
-    // Xóa diamond
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDiamond(@PathVariable Long id) {
         diamondService.deleteDiamond(id);

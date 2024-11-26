@@ -15,60 +15,139 @@ import org.springframework.web.bind.annotation.*;
 public class ProductViewController {
     @Autowired
     private ProductService productService;
-    //nhẫn kim cương nam
+    //nhẫn kim cương 
     @GetMapping("ring")
     public ResponseEntity<List<Product>> getAllRing() {
         return ResponseEntity.ok(productService.getProductsByCategoryId((long)1));
     }
-    //nhẫn kim cương nam
-    @GetMapping("ring/male")
-    public ResponseEntity<List<Product>> getAllMaleRing() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)2));
-    }
-    //nhẫn kim cương nữ
-    @GetMapping("ring/female")
-    public ResponseEntity<List<Product>> getAllFeMaleRing() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)3));
-    }
-    //nhẫn cầu hôn
-    @GetMapping("ring/proposal")
-    public ResponseEntity<List<Product>> getAllProposalRing() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)4));
-    }
-    //nhẫn cưới 
-    @GetMapping("ring/wedding")
-    public ResponseEntity<List<Product>> getAllWeddingRing() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)5));
-    }
-    //vòng tay
-    @GetMapping("bracelet")
-    public ResponseEntity<List<Product>> getAllBracelet() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)6));
-    }
-    //vòng cổ
-    @GetMapping("necklace")
-    public ResponseEntity<List<Product>> getAllNecklace() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)7));
-    }
-    //bông tai
-    @GetMapping("earrings")
-    public ResponseEntity<List<Product>> getAllEarrings() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)8));
-    }
-    //bộ trang sức
-    @GetMapping("jewelryset")
-    public ResponseEntity<List<Product>> getAlljewelrySet() {
-        return ResponseEntity.ok(productService.getProductsByCategoryId((long)9));
-    }
+    private ResponseEntity<List<Product>> filterProducts(
+            Long categoryId,
+            Integer minPriceInMillions,
+            Integer maxPriceInMillions,
+            String material,
+            String metallicColor,
+            String gender
+    ) {
+        BigDecimal minPrice = (minPriceInMillions != null) ? BigDecimal.valueOf(minPriceInMillions * 1_000_000) : null;
+        BigDecimal maxPrice = (maxPriceInMillions != null) ? BigDecimal.valueOf(maxPriceInMillions * 1_000_000) : null;
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<Product>> filterProducts(
-            @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor,
-            @RequestParam(required = false) Gender gender,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice) {
-        List<Product> products = productService.filterProducts(material, metallicColor, gender, minPrice, maxPrice);
+        List<Product> products = productService.filterProducts(categoryId, minPrice, maxPrice, material, metallicColor, gender);
         return ResponseEntity.ok(products);
     }
+
+    /**
+     * Nhẫn kim cương nam
+     */
+    @GetMapping("/ring/male")
+    public ResponseEntity<List<Product>> getAllMaleRing(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor
+    ) {
+        return filterProducts(2L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+    }
+
+    /**
+     * Nhẫn kim cương nữ
+     */
+    @GetMapping("/ring/female")
+    public ResponseEntity<List<Product>> getAllFemaleRing(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor
+    ) {
+        return filterProducts(3L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+    }
+
+    /**
+     * Nhẫn cầu hôn
+     */
+    @GetMapping("/ring/proposal")
+    public ResponseEntity<List<Product>> getAllProposalRing(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor
+    ) {
+        return filterProducts(4L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+    }
+
+    /**
+     * Nhẫn cưới
+     */
+    @GetMapping("/ring/wedding")
+    public ResponseEntity<List<Product>> getAllWeddingRing(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor
+    ) {
+        return filterProducts(5L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+    }
+
+    /**
+     * Vòng tay
+     */
+    @GetMapping("/bracelet")
+    public ResponseEntity<List<Product>> getAllBracelet(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor,
+            @RequestParam(required = false) String gender
+    ) {
+        return filterProducts(6L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+    }
+
+    /**
+     * Vòng cổ
+     */
+    @GetMapping("/necklace")
+    public ResponseEntity<List<Product>> getAllNecklace(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor,
+            @RequestParam(required = false) String gender
+    ) {
+        return filterProducts(7L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+    }
+
+    /**
+     * Bông tai
+     */
+    @GetMapping("/earrings")
+    public ResponseEntity<List<Product>> getAllEarrings(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String metallicColor,
+            @RequestParam(required = false) String gender
+    ) {
+        return filterProducts(8L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+    }
+
+    /**
+     * Bộ trang sức
+     */
+    @GetMapping("/jewelryset")
+    public ResponseEntity<List<Product>> getAllJewelrySet(
+            @RequestParam(required = false) Integer minPriceInMillions,
+            @RequestParam(required = false) Integer maxPriceInMillions
+    ) {
+        return filterProducts(9L, minPriceInMillions, maxPriceInMillions,null,null,null);
+    }
+
+    // @GetMapping("/filter")
+    // public ResponseEntity<List<Product>> filterProducts(
+    //         @RequestParam(required = false) String material,
+    //         @RequestParam(required = false) String metallicColor,
+    //         @RequestParam(required = false) Gender gender,
+    //         @RequestParam(required = false) BigDecimal minPrice,
+    //         @RequestParam(required = false) BigDecimal maxPrice) {
+    //     List<Product> products = productService.filterProducts(material, metallicColor, gender, minPrice, maxPrice);
+    //     return ResponseEntity.ok(products);
+    // }
 }

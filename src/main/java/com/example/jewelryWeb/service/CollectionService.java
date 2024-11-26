@@ -1,49 +1,53 @@
 package com.example.jewelryWeb.service;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.jewelryWeb.models.DTO.CollectionDTO;
 import com.example.jewelryWeb.models.Entity.Collection;
+import com.example.jewelryWeb.models.Entity.Product;
 import com.example.jewelryWeb.repository.CollectionRepository;
+import com.example.jewelryWeb.repository.ProductRepository;
+import com.example.jewelryWeb.repository.StorageRepository;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class CollectionService {
+
     @Autowired
-    private  CollectionRepository collectionRepository;
-
-
-    // Lấy tất cả collections
+    private CollectionRepository collectionRepository;
+ @Autowired
+    private ProductRepository productRepository;
+    // @Autowired
+    // private StorageRepository imageDataRepository;
+    // Lấy danh sách tất cả các collection
     public List<Collection> getAllCollections() {
         return collectionRepository.findAll();
     }
 
-    // Lấy collection theo ID
-    public Optional<Collection> getCollectionById(Long collectionId) {
-        return collectionRepository.findById(collectionId);
-    }
+//     public Collection saveCollection(CollectionDTO dto) {
+// String imageName = imageDataRepository.uploadImage(dto.getImage());
+//     String bannerName = imageDataRepository.uploadImage(dto.getBanner());
+//     String avatarName = imageDataRepository.uploadImage(dto.getAvatar());
 
-    // Thêm collection mới
-    public Collection addCollection(Collection collection) {
-        return collectionRepository.save(collection);
-    }
+//     Set<Product> products = productRepository.findAllById(dto.getProductId())
+//                                              .stream()
+//                                              .collect(Collectors.toSet());
 
-    // Cập nhật collection
-    public Collection updateCollection(Long collectionId, Collection updatedCollection) {
-        return collectionRepository.findById(collectionId).map(collection -> {
-            collection.setName(updatedCollection.getName());
-            collection.setDescription(updatedCollection.getDescription());
-            collection.setImage(updatedCollection.getImage());
-            collection.setAvatar(updatedCollection.getAvatar());
-            collection.setBanner(updatedCollection.getBanner());
-            collection.setIsActive(updatedCollection.getIsActive());
-            collection.setProducts(updatedCollection.getProducts());
-            return collectionRepository.save(collection);
-        }).orElseThrow(() -> new IllegalArgumentException("Collection not found with id: " + collectionId));
-    }
+//     Collection collection = Collection.builder()
+//         .collectionId(dto.getCollectionId())
+//         .name(dto.getName())
+//         .description(dto.getDescription())
+//         .image(imageName)
+//         .banner(bannerName)
+//         .avatar(avatarName)
+//         .products(products)
+//         .isActive(dto.getIsActive())
+//         .build();
 
-    // Xóa collection
-    public void deleteCollection(Long collectionId) {
-        collectionRepository.deleteById(collectionId);
-    }
+//     return collectionRepository.save(collection);
+// }
+    
 }

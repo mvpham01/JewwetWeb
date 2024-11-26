@@ -1,8 +1,13 @@
 package com.example.jewelryWeb.controllers.admin;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import com.example.jewelryWeb.models.Entity.*;
 import com.example.jewelryWeb.service.*;
 import org.springframework.web.bind.annotation.*;
@@ -14,42 +19,31 @@ public class CollectionController {
     private CollectionService collectionService;
 
 
-    @GetMapping
+
+     @GetMapping
     public ResponseEntity<List<Collection>> getAllCollections() {
         List<Collection> collections = collectionService.getAllCollections();
         return ResponseEntity.ok(collections);
     }
 
-    // Lấy collection theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Collection> getCollectionById(@PathVariable Long id) {
-        return collectionService.getCollectionById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Thêm collection mới
-    @PostMapping
-    public ResponseEntity<Collection> addCollection(@RequestBody Collection collection) {
-        Collection newCollection = collectionService.addCollection(collection);
-        return ResponseEntity.ok(newCollection);
-    }
+    // Tạo mới một collection
+    // @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    // public ResponseEntity<Collection> createCollection(@ModelAttribute CollectionDTO collectionDTO) {
+    //     Collection savedCollection = collectionService.saveCollection(collectionDTO);
+    //     return ResponseEntity.ok(savedCollection);
+    // }
 
     // Cập nhật collection
-    @PutMapping("/{id}")
-    public ResponseEntity<Collection> updateCollection(@PathVariable Long id, @RequestBody Collection collection) {
-        try {
-            Collection updatedCollection = collectionService.updateCollection(id, collection);
-            return ResponseEntity.ok(updatedCollection);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    // @PutMapping("/{id}")
+    // public ResponseEntity<CollectionDTO> updateCollection(@PathVariable Long id, @RequestBody CollectionDTO collectionDTO) {
+    //     Collection updatedCollection = collectionService.updateCollection(id, collectionDTO);
+    //     return updatedCollection != null ? ResponseEntity.ok(collectionService.toDTO(updatedCollection)) : ResponseEntity.notFound().build();
+    // }
 
-    // Xóa collection
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCollection(@PathVariable Long id) {
-        collectionService.deleteCollection(id);
-        return ResponseEntity.noContent().build();
-    }
+    // Lưu ảnh
+    // @PostMapping("/upload-image")
+    // public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    //     String response = storageService.uploadImage(file);
+    //     return ResponseEntity.ok(response);
+    // }
 }
