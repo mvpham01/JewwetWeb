@@ -10,4 +10,5 @@ import com.example.jewelryWeb.models.Entity.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByCategoryName(String categoryName);
+    Optional<Category> findByCategoryNameAndParentCategory(String categoryName, Category parentCategory);
 }

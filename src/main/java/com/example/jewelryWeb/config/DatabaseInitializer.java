@@ -19,63 +19,45 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         @Override
         public void run(String... args) throws Exception {
-                Optional<Category> rootCategory = categoryRepository.findByCategoryName("Nhẫn");
-                if (rootCategory.isEmpty()) {
-                        Category root = Category.builder()
+
+                Optional<Category> rootCategoryOpt = categoryRepository.findById(1L);
+                Category rootCategory;
+
+                if (rootCategoryOpt.isEmpty()) {
+                        rootCategory = Category.builder()
                                         .categoryName("Nhẫn")
                                         .gender(null)
                                         .parentCategory(null)
                                         .build();
-                        root = categoryRepository.save(root);
-                        Category maleRing = Category.builder()
-                                        .categoryName("Nhẫn Nam")
-                                        .gender(Gender.MALE)
-                                        .parentCategory(root)
-                                        .build();
-
-                        Category femaleRing = Category.builder()
-                                        .categoryName("Nhẫn Nữ")
-                                        .gender(Gender.FEMALE)
-                                        .parentCategory(root)
-                                        .build();
-
-                        Category proposalRing = Category.builder()
-                                        .categoryName("Nhẫn Cầu Hôn")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-
-                        Category weddingRing = Category.builder()
-                                        .categoryName("Nhẫn Cưới")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-                        Category earrings = Category.builder()
-                                        .categoryName("Bông Tai")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-                        Category necklace = Category.builder()
-                                        .categoryName("Vòng Cổ")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-                        Category bracelet = Category.builder()
-                                        .categoryName("Vòng Tay")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-                        Category jewelryset = Category.builder()
-                                        .categoryName("Bộ Trang Sức")
-                                        .gender(null)
-                                        .parentCategory(root)
-                                        .build();
-                        // Lưu các category con
-                        categoryRepository.saveAll(List.of(maleRing, femaleRing, proposalRing, weddingRing,  earrings, necklace, bracelet,jewelryset));
-
-                        System.out.println("Database initialized successfully with categories!");
+                        rootCategory = categoryRepository.save(rootCategory);
                 } else {
-                        System.out.println("Categories already exist in the database. Skipping initialization.");
+                        rootCategory = rootCategoryOpt.get();
                 }
+
+                List<Category> subCategories = List.of(
+                                Category.builder().categoryName("Nhẫn Nam").gender(Gender.MALE)
+                                                .parentCategory(rootCategory).build(),
+                                Category.builder().categoryName("Nhẫn Nữ").gender(Gender.FEMALE)
+                                                .parentCategory(rootCategory).build(),
+                                Category.builder().categoryName("Nhẫn Cầu Hôn").gender(null).parentCategory(null)
+                                                .build(),
+                                Category.builder().categoryName("Nhẫn Cưới").gender(null).parentCategory(null).build(),
+                                Category.builder().categoryName("Bông Tai").gender(null).parentCategory(null).build(),
+                                Category.builder().categoryName("Vòng Cổ").gender(null).parentCategory(null).build(),
+                                Category.builder().categoryName("Vòng Tay").gender(null).parentCategory(null).build(),
+                                Category.builder().categoryName("Bộ Trang Sức").gender(null).parentCategory(null)
+                                                .build());
+                Optional<Category> rootCategoryOpt2 = categoryRepository.findById(2L);
+                if (rootCategoryOpt2.isEmpty()) {
+                        for (Category subCategory : subCategories) {
+                                if (categoryRepository.findByCategoryNameAndParentCategory(
+                                                subCategory.getCategoryName(), rootCategory).isEmpty()) {
+                                        categoryRepository.save(subCategory);
+                                        System.out.println("Created sub-category: " + subCategory.getCategoryName());
+                                }
+                        }
+                }
+
+                System.out.println("Database initialization complete!");
         }
 }

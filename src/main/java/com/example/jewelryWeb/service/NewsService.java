@@ -55,16 +55,14 @@ public class NewsService {
     }
 
     public News updateNews(Long id, NewsDTO newsDTO) throws Exception {
-        // Kiểm tra xem bản ghi có tồn tại không
+
         News existingNews = newsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("News not found."));
     
-        // Kiểm tra tiêu đề trùng lặp
         if (!existingNews.getTitle().equals(newsDTO.getTitle()) && newsRepository.existsByTitle(newsDTO.getTitle())) {
             throw new Exception("Title already exists.");
         }
-    
-        // Xử lý cập nhật hình ảnh (nếu có hình ảnh mới)
+
         ImageData imageData = null;
         if (newsDTO.getImage() != null && !newsDTO.getImage().isEmpty()) {
             imageData = imageDataRepository.save(
@@ -75,7 +73,7 @@ public class NewsService {
                             .build());
         }
     
-        // Cập nhật thông tin bài viết
+
         existingNews.setTitle(newsDTO.getTitle());
         existingNews.setContentHeader(newsDTO.getContentHeader());
         existingNews.setContentFooter(newsDTO.getContentFooter());
