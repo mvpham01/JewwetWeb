@@ -2,12 +2,15 @@ package com.example.jewelryWeb.controllers.admin;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.example.jewelryWeb.models.DTO.ProductDTO;
+import com.example.jewelryWeb.models.DTO.ProductEditDTO;
 import com.example.jewelryWeb.models.Entity.*;
 import com.example.jewelryWeb.service.*;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +29,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public  Optional<Product> getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
-
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProductsByName(@RequestParam String name) {
+        List<Product> products = productService.searchByName(name);
+        return ResponseEntity.ok(products);
+    }
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> createProduct(@ModelAttribute ProductDTO productDTO) {
         try {
@@ -43,10 +48,8 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
-
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO productDTO) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @ModelAttribute ProductEditDTO productDTO) {
         try {
             Product updatedProduct = productService.editProduct(id, productDTO);
             return ResponseEntity.ok(updatedProduct);

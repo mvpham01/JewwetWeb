@@ -35,4 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>,JpaSpeci
         @Param("gender") String gender
     );
     boolean existsByProductName(String productName);
+    
+    List<Product> findByProductNameContainingIgnoreCase(String name);
+    
 }
