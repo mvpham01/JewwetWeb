@@ -263,4 +263,8 @@ public class ProductService {
         return productRepository.existsByProductName(productName);
     }
 
+    public Optional<Product> findById(Long id) {
+       return productRepository.findById(id);
+    }
+
 }
