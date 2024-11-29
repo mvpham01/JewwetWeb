@@ -13,6 +13,7 @@ public class NewsDTO {
     private String title;
     private String contentHeader;
     private MultipartFile image;
+    private MultipartFile thumbali;
     private String contentFooter;
     private LocalDateTime publishedAt;
     private Boolean isActive;

@@ -22,21 +22,21 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "NVARCHAR(MAX)")
     private String productName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonIgnore 
+    @JsonIgnore
     private Category category;
 
     @Column(nullable = false)
     private BigDecimal price;
-
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String metallicColor;
 
     private String ringBelt;
-
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String material;
 
     private Float discount;
@@ -47,6 +47,12 @@ public class Product {
     private Boolean isFeatured;
 
     private Boolean isActive;
+
+    private Boolean isIncludeMasterDiamond;
+
+    private String Shape;
+
+    private boolean male;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

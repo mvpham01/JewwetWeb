@@ -25,19 +25,17 @@ public class Category {
     @Column(nullable = false)
     private String categoryName;
 
-    @Column(length = 10)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    
 
      @ManyToOne
-    @JsonIgnore // Ngăn chặn tuần tự hóa đệ quy
+    @JsonIgnore 
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> subCategories;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnore // Ngăn không cho tuần tự hóa danh sách sản phẩm
+    @JsonIgnore 
     private Set<Product> products;
     
 }

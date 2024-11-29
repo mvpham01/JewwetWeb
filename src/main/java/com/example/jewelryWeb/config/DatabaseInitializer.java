@@ -26,7 +26,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 if (rootCategoryOpt.isEmpty()) {
                         rootCategory = Category.builder()
                                         .categoryName("Nhẫn")
-                                        .gender(null)
+                                        
                                         .parentCategory(null)
                                         .build();
                         rootCategory = categoryRepository.save(rootCategory);
@@ -35,17 +35,13 @@ public class DatabaseInitializer implements CommandLineRunner {
                 }
 
                 List<Category> subCategories = List.of(
-                                Category.builder().categoryName("Nhẫn Nam").gender(Gender.MALE)
-                                                .parentCategory(rootCategory).build(),
-                                Category.builder().categoryName("Nhẫn Nữ").gender(Gender.FEMALE)
-                                                .parentCategory(rootCategory).build(),
-                                Category.builder().categoryName("Nhẫn Cầu Hôn").gender(null).parentCategory(null)
+                                Category.builder().categoryName("Nhẫn Cầu Hôn").parentCategory(null)
                                                 .build(),
-                                Category.builder().categoryName("Nhẫn Cưới").gender(null).parentCategory(null).build(),
-                                Category.builder().categoryName("Bông Tai").gender(null).parentCategory(null).build(),
-                                Category.builder().categoryName("Vòng Cổ").gender(null).parentCategory(null).build(),
-                                Category.builder().categoryName("Vòng Tay").gender(null).parentCategory(null).build(),
-                                Category.builder().categoryName("Bộ Trang Sức").gender(null).parentCategory(null)
+                                Category.builder().categoryName("Nhẫn Cưới").parentCategory(null).build(),
+                                Category.builder().categoryName("Bông Tai").parentCategory(null).build(),
+                                Category.builder().categoryName("Vòng Cổ").parentCategory(null).build(),
+                                Category.builder().categoryName("Vòng Tay").parentCategory(null).build(),
+                                Category.builder().categoryName("Bộ Trang Sức").parentCategory(null)
                                                 .build());
                 Optional<Category> rootCategoryOpt2 = categoryRepository.findById(2L);
                 if (rootCategoryOpt2.isEmpty()) {

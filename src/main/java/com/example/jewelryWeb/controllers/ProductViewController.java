@@ -26,11 +26,10 @@ public class ProductViewController {
             Integer maxPriceInMillions,
             String material,
             String metallicColor,
-            String gender
+            Boolean gender
     ) {
         BigDecimal minPrice = (minPriceInMillions != null) ? BigDecimal.valueOf(minPriceInMillions * 1_000_000) : null;
         BigDecimal maxPrice = (maxPriceInMillions != null) ? BigDecimal.valueOf(maxPriceInMillions * 1_000_000) : null;
-
         List<Product> products = productService.filterProducts(categoryId, minPrice, maxPrice, material, metallicColor, gender);
         return ResponseEntity.ok(products);
     }
@@ -43,22 +42,24 @@ public class ProductViewController {
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor
+            @RequestParam(required = false) String metallicColor,
+            @RequestParam(required = false) Boolean gender
     ) {
-        return filterProducts(2L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+        return filterProducts(1L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender != null ? gender : true);
     }
 
     /**
      * Nhẫn kim cương nữ
      */
     @GetMapping("/ring/female")
-    public ResponseEntity<List<Product>> getAllFemaleRing(
+    public ResponseEntity<List<Product>> getAllFeMaleRing(
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor
+            @RequestParam(required = false) String metallicColor,
+            @RequestParam(required = false) Boolean gender
     ) {
-        return filterProducts(3L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+        return filterProducts(1L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender != null ? gender : false);
     }
 
     /**
@@ -71,7 +72,7 @@ public class ProductViewController {
             @RequestParam(required = false) String material,
             @RequestParam(required = false) String metallicColor
     ) {
-        return filterProducts(4L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+        return filterProducts(2L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
     }
 
     /**
@@ -84,7 +85,7 @@ public class ProductViewController {
             @RequestParam(required = false) String material,
             @RequestParam(required = false) String metallicColor
     ) {
-        return filterProducts(5L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
+        return filterProducts(3L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
     }
 
     /**
@@ -95,10 +96,9 @@ public class ProductViewController {
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor,
-            @RequestParam(required = false) String gender
+            @RequestParam(required = false) String metallicColor
     ) {
-        return filterProducts(6L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+        return filterProducts(4L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
     }
 
     /**
@@ -109,10 +109,9 @@ public class ProductViewController {
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor,
-            @RequestParam(required = false) String gender
+            @RequestParam(required = false) String metallicColor
     ) {
-        return filterProducts(7L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+        return filterProducts(5L, minPriceInMillions, maxPriceInMillions, material, metallicColor, null);
     }
 
     /**
@@ -123,10 +122,9 @@ public class ProductViewController {
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String metallicColor,
-            @RequestParam(required = false) String gender
+            @RequestParam(required = false) String metallicColor
     ) {
-        return filterProducts(8L, minPriceInMillions, maxPriceInMillions, material, metallicColor, gender);
+        return filterProducts(6L, minPriceInMillions, maxPriceInMillions, material, metallicColor,null);
     }
 
     /**
@@ -137,7 +135,7 @@ public class ProductViewController {
             @RequestParam(required = false) Integer minPriceInMillions,
             @RequestParam(required = false) Integer maxPriceInMillions
     ) {
-        return filterProducts(9L, minPriceInMillions, maxPriceInMillions,null,null,null);
+        return filterProducts(7L, minPriceInMillions, maxPriceInMillions,null,null,null);
     }
 
     // @GetMapping("/filter")

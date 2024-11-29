@@ -27,6 +27,8 @@ public class Jemmia {
     private String contentHeader;
 
     private long image;
+    
+    private long thumbali;
 
     @Column(columnDefinition = "TEXT")
     private String contentFooter;

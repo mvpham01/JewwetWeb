@@ -255,7 +255,7 @@ public class ProductService {
     }
 
     public List<Product> filterProducts(Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, String material,
-            String metallicColor, String gender) {
+            String metallicColor, Boolean gender) {
         return productRepository.filterProducts(categoryId, minPrice, maxPrice, material, metallicColor, gender);
     }
 
